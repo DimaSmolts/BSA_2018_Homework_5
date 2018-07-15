@@ -32,6 +32,7 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 
 		public List<Ticket> GetAll()
 		{
+			List<Ticket> temp = db.Ticket.ToList();
 			return db.Ticket.ToList();
 		}
 
@@ -46,30 +47,25 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			if (temp != null)
 			{
 				db.Ticket.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(Ticket item)
 		{
 			db.Ticket.Add(item);
+			db.SaveChanges();
 		}
 
 		public void Update(int id, Ticket item)
 		{
-			//Ticket temp = tickets.FirstOrDefault(t => t.Id == id);
-			//if (temp != null)
-			//{
-			//	temp.Id = item.Id;
-			//	temp.Price = item.Price;
-			//temp.FlightNum = item.FlightNum;
-
-			//	SaveChanges();
-			//}
 			Ticket temp = db.Ticket.Find(id);
 			if (temp != null)
 			{
-				db.Ticket.Remove(temp);
-				db.Ticket.Add(item);
+				temp.Price = item.Price;
+
+				db.Ticket.Update(temp);
+				db.SaveChanges();				
 			}
 		}
 	}

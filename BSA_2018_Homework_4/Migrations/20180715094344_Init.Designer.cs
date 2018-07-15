@@ -11,8 +11,8 @@ using System;
 namespace BSA_2018_Homework_4.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20180714191854_TicktUpdate")]
-    partial class TicktUpdate
+    [Migration("20180715094344_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,13 +156,13 @@ namespace BSA_2018_Homework_4.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("FlightId");
+                    b.Property<int?>("FlightNumFlightId");
 
                     b.Property<decimal>("Price");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FlightId");
+                    b.HasIndex("FlightNumFlightId");
 
                     b.ToTable("Ticket");
                 });
@@ -205,9 +205,9 @@ namespace BSA_2018_Homework_4.Migrations
 
             modelBuilder.Entity("BSA_2018_Homework_4.DAL.Models.Ticket", b =>
                 {
-                    b.HasOne("BSA_2018_Homework_4.DAL.Models.Flight")
-                        .WithMany("TicketId")
-                        .HasForeignKey("FlightId");
+                    b.HasOne("BSA_2018_Homework_4.DAL.Models.Flight", "FlightNum")
+                        .WithMany()
+                        .HasForeignKey("FlightNumFlightId");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,6 +6,7 @@ using BSA_2018_Homework_4.DAL.Models;
 using BSA_2018_Homework_4.DAL.RepositoryInterfaces;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace BSA_2018_Homework_4.DAL.Repositories
 {
@@ -32,7 +33,13 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 
 		public List<TakeOff> GetAll()
 		{
-			return db.TakeOff.ToList();
+			List<TakeOff> temp = db.TakeOff.ToList();
+
+			return db.TakeOff
+				.Include(t => t.PlaneId)
+				.Include(t => t.FlightNum)
+				.Include(t => t.CrewId)
+				.ToList();
 		}
 
 		public TakeOff Get(int id)
@@ -46,34 +53,36 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			if (temp != null)
 			{
 				db.TakeOff.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(TakeOff item)
 		{
 			db.Add(item);
+			db.SaveChanges();
 		}
 
 		public void Update(int id, TakeOff item)
 		{
-			//TakeOff temp = takeoffs.FirstOrDefault(t => t.Id == id);
-			//if (temp != null)
-			//{
-			//	temp.Id = item.Id;
-			//	temp.FlightNum = item.FlightNum;
-			//	temp.Date = item.Date;
-			//temp.CrewId = item.CrewId;
-			//	temp.PlaneId = item.PlaneId;
-
-			//	SaveChanges();
-			//}
-
-			TakeOff temp = db.TakeOff.Find(id);
+			TakeOff temp = takeoffs.FirstOrDefault(t => t.Id == id);
 			if (temp != null)
 			{
-				db.TakeOff.Remove(temp);
-				db.TakeOff.Add(item);
+				//temp.Id = item.Id;
+				temp.FlightNum = item.FlightNum;
+				temp.Date = item.Date;
+				temp.CrewId = item.CrewId;
+				temp.PlaneId = item.PlaneId;
+
+				db.SaveChanges();
 			}
+
+			//TakeOff temp = db.TakeOff.Find(id);
+			//if (temp != null)
+			//{
+			//	db.TakeOff.Remove(temp);
+			//	db.TakeOff.Add(item);
+			//}
 
 		}
 	}

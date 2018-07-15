@@ -6,6 +6,7 @@ using BSA_2018_Homework_4.DAL.Models;
 using BSA_2018_Homework_4.DAL.RepositoryInterfaces;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace BSA_2018_Homework_4.DAL.Repositories
 {
@@ -32,12 +33,20 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 
 		public List<Crew> GetAll()
 		{
-			return db.Crew.ToList();
+			return db.Crew
+				.Include(t => t.StewardessIds)
+				.Include(t=> t.PilotId)
+				.ToList();
+				
 		}
 
 		public Crew Get(int id)
 		{
-			return db.Crew.Find(id);
+			return db.Crew
+				.Find(id)
+				//.Include(t => t.StewardessIds)
+				//.Include(t => t.PilotId)
+				;
 		}
 
 		public void Delete(int id)
@@ -45,13 +54,15 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			Crew temp = db.Crew.Find(id);
 			if (temp != null)
 			{
-				db.Crew.Remove(temp);				
+				db.Crew.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(Crew item)
 		{
 			db.Crew.Add(item);
+			db.SaveChanges();
 		}
 
 		public void Update(int id, Crew item)
@@ -59,18 +70,17 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			//Crew temp = crews.FirstOrDefault(t => t.Id == id);
 			//if (temp != null)
 			//{
-			//	temp.Id = item.Id;
-			//	temp.PilotId = item.PilotId;
-			//	temp.StewardessIds = item.StewardessIds;
 
-			//	SaveChanges();
 			//}
 
 			Crew temp = db.Crew.Find(id);
 			if (temp != null)
 			{
-				db.Crew.Remove(temp);
-				db.Crew.Add(item);
+					temp.Id = item.Id;
+					temp.PilotId = item.PilotId;
+					temp.StewardessIds = item.StewardessIds;
+
+					SaveChanges();
 			}
 		}
 	}

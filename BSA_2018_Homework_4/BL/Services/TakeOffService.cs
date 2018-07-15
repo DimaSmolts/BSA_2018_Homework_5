@@ -21,7 +21,17 @@ namespace BSA_2018_Homework_4.BL.Services
 
 		public void CreateTakeOff(TakeOffDTO item)
 		{
-			IunitOfWork.TakeOffRepository.Create(Mapper.Map<TakeOffDTO, TakeOff>(item));
+			TakeOff temp = Mapper.Map<TakeOffDTO, TakeOff>(item);
+			temp.CrewId = IunitOfWork.CrewRepository.Get(item.CrewId);
+
+			temp.FlightNum = IunitOfWork.FlightRepository.Get(item.FlightNum);
+
+			temp.PlaneId = IunitOfWork.PlaneRepository.Get(item.PlaneId);
+
+			if(temp.CrewId != null && temp.PlaneId != null && temp.FlightNum != null)
+			{
+				IunitOfWork.TakeOffRepository.Create(temp);
+			}		
 		}
 
 		public void DeleteTakeOffById(int id)
@@ -31,12 +41,22 @@ namespace BSA_2018_Homework_4.BL.Services
 
 		public TakeOffDTO GetTakeOffById(int id)
 		{
-			return Mapper.Map<TakeOff,TakeOffDTO>(IunitOfWork.TakeOffRepository.Get(id));
+			List<TakeOff> temp = IunitOfWork.TakeOffRepository.GetAll();
+
+			List<TakeOffDTO> tempDTO = Mapper.Map<List<TakeOff>, List<TakeOffDTO>>(temp);
+
+
+			return tempDTO.Where(dto => dto.Id == id).First();
 		}
 
 		public List<TakeOffDTO> GetTakeOffCollection()
 		{
-			return Mapper.Map<List<TakeOff>,List<TakeOffDTO>>(IunitOfWork.TakeOffRepository.GetAll());
+			List<TakeOff> temp = IunitOfWork.TakeOffRepository.GetAll();
+
+			List<TakeOffDTO> tempDTO = Mapper.Map<List<TakeOff>, List<TakeOffDTO>>(temp);
+
+
+			return tempDTO;
 		}
 
 		public void UpdateTakeOff(int id, TakeOffDTO item)

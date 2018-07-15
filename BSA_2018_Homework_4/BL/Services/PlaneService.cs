@@ -23,11 +23,32 @@ namespace BSA_2018_Homework_4.BL.Services
 
 		public List<PlaneDTO> GetPlaneCollection()
 		{
-			return Mapper.Map<List<Plane>, List<PlaneDTO>>(IunitOfWork.PlaneRepository.GetAll());
+			List<Plane> temp = IunitOfWork.PlaneRepository.GetAll();
+			List<PlaneDTO> selected = Mapper.Map<List<Plane>, List<PlaneDTO>>(temp);
+
+			foreach(PlaneDTO p in selected)
+			{
+				p.Type = (from x in temp
+						  where x.Id == p.Id
+						  select x.Type.Id).First();
+			}
+
+			return selected;
 		}
 		public PlaneDTO GetPlaneById(int id)
 		{
-			return Mapper.Map<Plane,PlaneDTO>(IunitOfWork.PlaneRepository.Get(id));
+			Plane temp = IunitOfWork.PlaneRepository.Get(id);
+			PlaneDTO selected = Mapper.Map<Plane, PlaneDTO>(temp);
+
+			if(temp != null)
+			{
+				selected.Type = temp.Type.Id;
+				return selected;
+			}
+			else
+			{
+				throw new Exception();
+			}
 		}
 		public void DeletePlaneById(int id)
 		{
@@ -35,7 +56,17 @@ namespace BSA_2018_Homework_4.BL.Services
 		}
 		public void CreatePlane(PlaneDTO item)
 		{
-			IunitOfWork.PlaneRepository.Create(Mapper.Map<PlaneDTO, Plane>(item));
+			Plane temp = Mapper.Map<PlaneDTO, Plane>(item);
+			temp.Type = IunitOfWork.PlaneTypeRepository.Get(item.Type);
+			if(temp.Type != null)
+			{
+				IunitOfWork.PlaneRepository.Create(temp);
+			}
+			else
+			{
+				throw new Exception();
+			}
+			
 		}
 		public void UpdatePlane(int id, PlaneDTO item)
 		{

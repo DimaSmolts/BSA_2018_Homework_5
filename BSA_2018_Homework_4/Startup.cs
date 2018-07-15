@@ -52,6 +52,10 @@ namespace BSA_2018_Homework_4
 			services.AddScoped<BL.ServiceInterfaces.ICrewService, BL.Services.CrewService>();
 			services.AddScoped<DAL.RepositoryInterfaces.ICrewRepository, DAL.Repositories.CrewRepository>();
 
+			///////////////////////////////////
+			///////////////////////////////////
+			///////////////////////////////////
+			////Впишіть будь ласка стрічку підключення до свого серверу
 
 			var connection = @"Server=DESKTOP-DMYTRO\SQLEXPRESS;Initial Catalog=Academy;Trusted_Connection=True;ConnectRetryCount=0";
 			services.AddDbContext<DAL.MyContext>(options => options.UseSqlServer(connection));
@@ -66,23 +70,29 @@ namespace BSA_2018_Homework_4
 
 			Mapper.Initialize(cfg =>
 			{
-				cfg.CreateMap<DAL.Models.Plane, DTOs.PlaneDTO>();
-				cfg.CreateMap<DTOs.PlaneDTO, DAL.Models.Plane>();
+				cfg.CreateMap<DAL.Models.Plane, DTOs.PlaneDTO>()
+				.ForMember(p => p.Type, dto => dto.Ignore());
+				cfg.CreateMap<DTOs.PlaneDTO, DAL.Models.Plane>()
+				.ForMember(dto => dto.Type, p => p.Ignore());
 
-				cfg.CreateMap<DAL.Models.Flight, DTOs.FlightDTO>();
-				cfg.CreateMap<DTOs.FlightDTO, DAL.Models.Flight>();
+				cfg.CreateMap<DAL.Models.Flight, DTOs.FlightDTO>()
+				.ForMember(f => f.FlightNum, dto => dto.MapFrom(src => src.FlightId));
+				cfg.CreateMap<DTOs.FlightDTO, DAL.Models.Flight>()
+				.ForMember(dto => dto.FlightId, f => f.MapFrom(src => src.FlightNum));
 
-				cfg.CreateMap<DAL.Models.Ticket, DTOs.TicketDTO>();
-				cfg.CreateMap<DTOs.TicketDTO, DAL.Models.Ticket>();
+				cfg.CreateMap<DAL.Models.Ticket, DTOs.TicketDTO>()
+				.ForMember(t => t.FlightNum, dto => dto.Ignore());
+				cfg.CreateMap<DTOs.TicketDTO, DAL.Models.Ticket>()
+				.ForMember(dto => dto.FlightNum, t => t.Ignore());
 
 
 
 
 
 
-				cfg.CreateMap<DAL.Models.Crew, DTOs.CrewDTO>();
-					//.ForMember( cDTO => cDTO.StewardessIds,
-							//	c => c.MapFrom(from i in ));
+				cfg.CreateMap<DAL.Models.Crew, DTOs.CrewDTO>()
+				.ForMember(c => c.PilotId, dto => dto.MapFrom(src => src.PilotId.Id));
+				//.ForMember(c => c.StewardessIds, dto => dto.MapFrom());
 				cfg.CreateMap<DTOs.CrewDTO, DAL.Models.Crew>();
 
 
@@ -96,8 +106,15 @@ namespace BSA_2018_Homework_4
 				cfg.CreateMap<DAL.Models.Stewardess, DTOs.StewardessDTO>();
 				cfg.CreateMap<DTOs.StewardessDTO, DAL.Models.Stewardess>();
 
-				cfg.CreateMap<DAL.Models.TakeOff, DTOs.TakeOffDTO>();
-				cfg.CreateMap<DTOs.TakeOffDTO, DAL.Models.TakeOff>();
+				cfg.CreateMap<DAL.Models.TakeOff, DTOs.TakeOffDTO>()
+				.ForMember(dto => dto.PlaneId, to => to.MapFrom(src => src.PlaneId.Id))
+				.ForMember(dto => dto.CrewId, to => to.MapFrom(src => src.CrewId.Id))
+				.ForMember(dto => dto.FlightNum, to => to.MapFrom(src => src.FlightNum.FlightId));
+				cfg.CreateMap<DTOs.TakeOffDTO, DAL.Models.TakeOff>()
+				.ForMember(to => to.CrewId, dto => dto.Ignore())
+				.ForMember(to => to.PlaneId, dto => dto.Ignore())
+				.ForMember(to => to.FlightNum, dto => dto.Ignore());
+
 
 				cfg.CreateMap<DAL.Models.PlaneType, DTOs.PlaneTypeDTO>();
 				cfg.CreateMap<DTOs.PlaneTypeDTO, DAL.Models.PlaneType>();

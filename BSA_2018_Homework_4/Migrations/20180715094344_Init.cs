@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BSA_2018_Homework_4.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -73,7 +73,8 @@ namespace BSA_2018_Homework_4.Migrations
                         column: x => x.FlightNumFlightId,
                         principalTable: "Flight",
                         principalColumn: "FlightId",
-                        onDelete: ReferentialAction.Restrict);
+						onUpdate: ReferentialAction.Cascade,
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,7 +93,8 @@ namespace BSA_2018_Homework_4.Migrations
                         column: x => x.PilotIdId,
                         principalTable: "Pilot",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+						onUpdate: ReferentialAction.Cascade,
+						onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,8 +115,9 @@ namespace BSA_2018_Homework_4.Migrations
                         name: "FK_PLane_PlaneType_TypeId",
                         column: x => x.TypeId,
                         principalTable: "PlaneType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id", 
+						onUpdate: ReferentialAction.Cascade,
+						onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,8 +138,9 @@ namespace BSA_2018_Homework_4.Migrations
                         name: "FK_Stewardess_Crew_CrewId",
                         column: x => x.CrewId,
                         principalTable: "Crew",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id", 
+						onUpdate: ReferentialAction.Cascade,
+						onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,20 +161,23 @@ namespace BSA_2018_Homework_4.Migrations
                         name: "FK_TakeOff_Crew_CrewIdId",
                         column: x => x.CrewIdId,
                         principalTable: "Crew",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id", 
+						onUpdate: ReferentialAction.Cascade,
+						onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TakeOff_Flight_FlightNumFlightId",
                         column: x => x.FlightNumFlightId,
                         principalTable: "Flight",
                         principalColumn: "FlightId",
-                        onDelete: ReferentialAction.Restrict);
+						onUpdate: ReferentialAction.Cascade,
+						onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TakeOff_PLane_PlaneIdId",
                         column: x => x.PlaneIdId,
                         principalTable: "PLane",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+						onUpdate: ReferentialAction.Cascade,
+						onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

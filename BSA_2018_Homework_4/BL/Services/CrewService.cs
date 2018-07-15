@@ -22,7 +22,26 @@ namespace BSA_2018_Homework_4.BL.Services
 
 		public void CreateCrew(CrewDTO item)
 		{
-			IunitOfWork.CrewRepository.Create(Mapper.Map<CrewDTO,Crew>(item));
+			Crew temp = new Crew();
+			temp.PilotId = IunitOfWork.PilotRepository.Get(item.PilotId);
+
+			List<Stewardess> tempS = IunitOfWork.StewardessRepository.GetAll();
+			List<Stewardess> selected = new List<Stewardess>();
+			foreach (Stewardess s in tempS)
+			{
+				foreach (int i in item.StewardessIds)
+				{
+					if (s.Id == i)
+						selected.Add(s);
+				}
+
+			}
+			temp.StewardessIds = selected;
+
+			if (temp.StewardessIds.Count == item.StewardessIds.Count() && temp.PilotId != null)
+			{
+				IunitOfWork.CrewRepository.Create(temp);
+			}			
 		}
 
 		public void DeleteCrewById(int id)
@@ -32,12 +51,26 @@ namespace BSA_2018_Homework_4.BL.Services
 
 		public CrewDTO GetCrewById(int id)
 		{
+
+
 			return Mapper.Map<Crew, CrewDTO>(IunitOfWork.CrewRepository.Get(id));
 		}
 
 		public List<CrewDTO> GetCrewCollection()
 		{
-			return Mapper.Map<List<Crew>, List<CrewDTO>>(IunitOfWork.CrewRepository.GetAll());
+			//List<Crew> temp = IunitOfWork.CrewRepository.GetAll();
+			//List<CrewDTO> selected = Mapper.Map<List<Crew>, List<CrewDTO>>(temp);
+
+			//List<Stewardess> tempS = new List<Stewardess>();
+			//List<Stewardess> stw = IunitOfWork.StewardessRepository.GetAll();
+
+			//foreach 
+
+			//List<CrewDTO> selected
+
+			//List<CrewDTO> crewDTOs = Mapper.Map<List<Crew>, List<CrewDTO>>(IunitOfWork.CrewRepository.GetAll());
+
+			return Mapper.Map<List<Crew>, List<CrewDTO>>(IunitOfWork.CrewRepository.GetAll());// crewDTOs;
 		}
 
 		public void UpdateCrew(int id, CrewDTO item)

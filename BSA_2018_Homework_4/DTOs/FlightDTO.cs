@@ -12,6 +12,6 @@ namespace BSA_2018_Homework_4.DTOs
 		public DateTime DepartureTime { get; set; }
 		public string ArrivalPlace { get; set; }
 		public DateTime ArrivalTime { get; set; }
-		public int[] TicketId { get; set; }
+		//public int[] TicketId { get; set; }
 	}
 }

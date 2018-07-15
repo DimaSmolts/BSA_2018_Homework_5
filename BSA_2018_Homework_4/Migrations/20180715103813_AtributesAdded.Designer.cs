@@ -11,8 +11,8 @@ using System;
 namespace BSA_2018_Homework_4.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20180714194837_plane updated")]
-    partial class planeupdated
+    [Migration("20180715103813_AtributesAdded")]
+    partial class AtributesAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,13 +40,15 @@ namespace BSA_2018_Homework_4.Migrations
                     b.Property<int>("FlightId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ArrivalPlace");
+                    b.Property<string>("ArrivalPlace")
+                        .HasMaxLength(80);
 
                     b.Property<DateTime>("ArrivalTime");
 
                     b.Property<DateTime>("DepartureTime");
 
-                    b.Property<string>("DeperturePlace");
+                    b.Property<string>("DeperturePlace")
+                        .HasMaxLength(80);
 
                     b.HasKey("FlightId");
 
@@ -62,9 +64,11 @@ namespace BSA_2018_Homework_4.Migrations
 
                     b.Property<TimeSpan>("Experience");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -80,9 +84,14 @@ namespace BSA_2018_Homework_4.Migrations
 
                     b.Property<DateTime>("Made");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(40);
+
+                    b.Property<int?>("TypeId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("PLane");
                 });
@@ -94,15 +103,12 @@ namespace BSA_2018_Homework_4.Migrations
 
                     b.Property<int>("CarryCapacity");
 
-                    b.Property<string>("Model");
+                    b.Property<string>("Model")
+                        .HasMaxLength(40);
 
                     b.Property<int>("Places");
 
-                    b.Property<int?>("PlaneId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PlaneId");
 
                     b.ToTable("PlaneType");
                 });
@@ -116,9 +122,11 @@ namespace BSA_2018_Homework_4.Migrations
 
                     b.Property<int?>("CrewId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -156,13 +164,13 @@ namespace BSA_2018_Homework_4.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("FlightId");
+                    b.Property<int?>("FlightNumFlightId");
 
                     b.Property<decimal>("Price");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FlightId");
+                    b.HasIndex("FlightNumFlightId");
 
                     b.ToTable("Ticket");
                 });
@@ -174,11 +182,11 @@ namespace BSA_2018_Homework_4.Migrations
                         .HasForeignKey("PilotIdId");
                 });
 
-            modelBuilder.Entity("BSA_2018_Homework_4.DAL.Models.PlaneType", b =>
+            modelBuilder.Entity("BSA_2018_Homework_4.DAL.Models.Plane", b =>
                 {
-                    b.HasOne("BSA_2018_Homework_4.DAL.Models.Plane", "Plane")
+                    b.HasOne("BSA_2018_Homework_4.DAL.Models.PlaneType", "Type")
                         .WithMany()
-                        .HasForeignKey("PlaneId");
+                        .HasForeignKey("TypeId");
                 });
 
             modelBuilder.Entity("BSA_2018_Homework_4.DAL.Models.Stewardess", b =>
@@ -205,9 +213,9 @@ namespace BSA_2018_Homework_4.Migrations
 
             modelBuilder.Entity("BSA_2018_Homework_4.DAL.Models.Ticket", b =>
                 {
-                    b.HasOne("BSA_2018_Homework_4.DAL.Models.Flight")
-                        .WithMany("TicketId")
-                        .HasForeignKey("FlightId");
+                    b.HasOne("BSA_2018_Homework_4.DAL.Models.Flight", "FlightNum")
+                        .WithMany()
+                        .HasForeignKey("FlightNumFlightId");
                 });
 #pragma warning restore 612, 618
         }

@@ -46,31 +46,28 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			if (temp != null)
 			{
 				db.Stewardess.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(Stewardess item)
 		{
 			db.Stewardess.Add(item);
+			db.SaveChanges();
 		}
 
 		public void Update(int id, Stewardess item)
 		{
-			//Stewardess temp = stewardesses.FirstOrDefault(t => t.Id == id);
-			//if (temp != null)
-			//{
-			//	temp.Id = item.Id;
-			//	temp.Name = item.Name;
-			//	temp.Surname = item.Surname;
-			//	temp.Birth = item.Birth;
-			//
-			//	SaveChanges();
-			//}
 			Stewardess temp = db.Stewardess.Find(id);
 			if (temp != null)
 			{
-				db.Stewardess.Remove(temp);
-				db.Stewardess.Add(item);
+
+				temp.Name = item.Name;
+				temp.Surname = item.Surname;
+				temp.Birth = item.Birth;
+
+				db.Stewardess.Update(temp);
+				db.SaveChanges();
 			}
 		}
 	}

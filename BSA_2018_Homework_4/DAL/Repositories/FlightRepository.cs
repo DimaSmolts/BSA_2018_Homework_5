@@ -32,6 +32,8 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 
 		public List<Flight> GetAll()
 		{
+			List<Flight> test = db.Flight.ToList();
+
 			return db.Flight.ToList();
 		}
 
@@ -46,35 +48,37 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			if (temp != null)
 			{
 				db.Flight.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(Flight item)
 		{
 			db.Flight.Add(item);
+			db.SaveChanges();
 		}
 
 		public void Update(int id,Flight item)
 		{
-		//	Flight temp = flights.FirstOrDefault(t => t.FlightNum == id);
-			//if (temp != null)
-			//{
-			//	temp.FlightNum = item.FlightNum;
-			//	temp.DeperturePlace = item.DeperturePlace;
-			//	temp.DepartureTime = item.DepartureTime;
-				//temp.ArrivalPlace = item.ArrivalPlace;
-				//temp.ArrivalTime = item.ArrivalTime;
-				//temp.TicketId = item.TicketId;
-
-				//SaveChanges();
-			//}
-
 			Flight temp = db.Flight.Find(id);
 			if (temp != null)
 			{
-				db.Flight.Remove(temp);
-				db.Flight.Add(item);
+				//temp.FlightId = item.FlightNum;
+				temp.DeperturePlace = item.DeperturePlace;
+				temp.DepartureTime = item.DepartureTime;
+				temp.ArrivalPlace = item.ArrivalPlace;
+				temp.ArrivalTime = item.ArrivalTime;
+				//temp.TicketId = item.TicketId;
+
+				SaveChanges();
 			}
+
+			//Flight temp = db.Flight.Find(id);
+			//if (temp != null)
+			//{
+			//	db.Flight.Remove(temp);
+			//	db.Flight.Add(item);
+			//}
 		}
 	}
 }

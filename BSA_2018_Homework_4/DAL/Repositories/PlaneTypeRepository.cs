@@ -47,32 +47,29 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			if (temp != null)
 			{
 				db.PlaneType.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(PlaneType item)
 		{
 			db.PlaneType.Add(item);
+			db.SaveChanges();
 		}
 
 		public void Update(int id, PlaneType item)
-		{
-			//PlaneType temp = planetypes.FirstOrDefault(t => t.Id == id);
-			//if (temp != null)
-			//{
-			//	temp.Id = item.Id;
-			//	temp.Model = item.Model;
-			//	temp.Places = item.Places;
-			//	temp.CarryCapacity = item.CarryCapacity;
-			//
-			//SaveChanges();
-			//}
+		{			
 
 			PlaneType temp = db.PlaneType.Find(id);
 			if (temp != null)
 			{
-				db.PlaneType.Remove(temp);
-				db.PlaneType.Add(item);
+				temp.CarryCapacity = item.CarryCapacity;
+				temp.Model = item.Model;
+				temp.Places = item.Places;
+
+
+				db.PlaneType.Update(temp);
+				db.SaveChanges();
 			}
 
 		}

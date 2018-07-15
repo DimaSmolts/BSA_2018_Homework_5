@@ -6,6 +6,7 @@ using BSA_2018_Homework_4.DAL.Models;
 using BSA_2018_Homework_4.DAL.RepositoryInterfaces;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace BSA_2018_Homework_4.DAL.Repositories
 {
@@ -32,7 +33,9 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 
 		public List<Plane> GetAll()
 		{
-			return db.PLane.ToList();
+			return db.PLane
+				.Include(pl => pl.Type)
+				.ToList();
 		}
 
 		public Plane Get(int id)
@@ -46,35 +49,36 @@ namespace BSA_2018_Homework_4.DAL.Repositories
 			if (temp != null)
 			{
 				db.PLane.Remove(temp);
+				db.SaveChanges();
 			}				
 		}
 
 		public void Create(Plane item)
 		{
 			db.PLane.Add(item);
-			//SaveChanges();
+			db.SaveChanges();
 		}
 
 		public void Update(int id, Plane item)
 		{
-			//Plane temp = planes.FirstOrDefault(t => t.Id == id);
-			//if (temp != null)
-			//{
-			//	temp.Id = item.Id;
-			//	temp.Name = item.Name;
-			//	temp.Type = item.Type;
-			//	temp.Made = item.Made;
-			//	temp.Exploitation = item.Exploitation;
-			//
-			//	SaveChanges();
-			//}
-
 			Plane temp = db.PLane.Find(id);
 			if (temp != null)
 			{
-				db.PLane.Remove(temp);
-				db.PLane.Add(item);
+				//temp.Id = item.Id;
+				temp.Name = item.Name;
+				//temp.Type = item.Type;
+				temp.Made = item.Made;
+				temp.Exploitation = item.Exploitation;
+
+				SaveChanges();
 			}
+
+			//Plane temp = db.PLane.Find(id);
+			//if (temp != null)
+			//{
+			//	db.PLane.Remove(temp);
+			//	db.PLane.Add(item);
+			//}
 		}
 	}
 }
