@@ -1,0 +1,59 @@
+Stewardess
+{
+	"Name" : "y",
+	"Surname" : "x",
+	"Birth" : "2018-06-02T05:16:43.336Z"
+}
+
+Pilot
+{
+	"Name" : "Dima",
+	"Surname" : "Smolts",
+	"Birth" : "1998-06-28T00:00:00",
+	"Experience" : "0.00:00:00"
+}
+
+Ticket
+{	
+	"Price" : 600,
+	"FlightNum" : 3
+}
+
+PlaneType
+{
+	"Model" : "Boeing-777",
+	"Places" : 235,
+	"CarryCApacity" : 242000
+}
+
+Plane
+{	
+	"Name" : "Kondor",
+	"Type" : 2,
+	"Made" : "2018-06-02T05:16:43.336Z",
+	"Exploitation" : "0.00:00:00"
+}
+
+Crew
+{	
+	"PilotId" : 3,
+	"StewardessIds" : [
+		3,
+		4]
+}
+
+Flight
+{
+	"DeperturePlace" : "Kyiv",
+	"DepartureTime" : "2018-06-02T05:16:43.336Z",
+	"ArrivalPlace" : "Frankfurt",
+	"ArrivalTime" : "2018-06-02T05:16:43.336Z",
+}
+
+TakeOff
+{	
+	"FlightNum" : 3,
+	"Date" : "2018-06-02T05:16:43.336Z",
+	"CrewId" : 3,
+	"PlaneId" : 3
+}
